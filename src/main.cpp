@@ -206,10 +206,8 @@ void opcontrol() {
 
     //I think this should be a single button an just be a toggle on/off
     if(master.get_digital_new_press(DIGITAL_X)) {
-      Flaps.set_value(true);
-    } else if(master.get_digital_new_press(DIGITAL_B)) {
-      Flaps.set_value(false);
-    } 
+      Flaps.set_value(!Flaps.get_value());
+    }
 
     if(master.get_digital(DIGITAL_UP)) {
       Deploy.set_value(true);
