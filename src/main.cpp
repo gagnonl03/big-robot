@@ -148,7 +148,10 @@ void opcontrol() {
   pros::Motor MiddleShoot(15);
   pros::Motor TopShoot(16);
   pros::Motor BotShoot(12);
-  pros::ADIDigitalOut Flaps('a');
+  //doing this instead of using ADIDigitalOut gives access to
+  //get_value(), making turning this into a 1 button toggle a lot easier
+  pros::ADIPort Flaps('a', pros::E_ADI_DIGITAL_OUT);
+  
   pros::ADIDigitalOut Deploy('b');
   while (true) {
     
