@@ -59,19 +59,21 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-    Auton("Example Drive\n\nDrive forward and come back.", drive_example),
+    /*Auton("Example Drive\n\nDrive forward and come back.", drive_example),
     Auton("Example Turn\n\nTurn 3 times.", turn_example),
     Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
     Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
     Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
     Auton("Combine all 3 movements", combining_movements),
-    Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
+    Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),*/
+    Auton("Turn Test", turn_test),
   });
 
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
   master.rumble(".");
+
 }
 
 
@@ -153,24 +155,30 @@ void opcontrol() {
   pros::ADIPort Flaps('a', pros::E_ADI_DIGITAL_OUT);
   
   pros::ADIDigitalOut Deploy('b');
+
+  master.clear_line(0);
+
   while (true) {
+
+    master.print(0,0, "imu:%.2f",chassis.drive_imu_get());
+    pros::lcd::print(7, "imu:%.2f",chassis.drive_imu_get());
     
     // PID Tuner
     // After you find values that you're happy with, you'll have to set them in auton.cpp
-    //if (!pros::competition::is_connected()) { 
+    if (!pros::competition::is_connected()) { 
       // Enable / Disable PID Tuner
       //  When enabled: 
       //  * use A and Y to increment / decrement the constants
       //  * use the arrow keys to navigate the constants
-      //if (master.get_digital_new_press(DIGITAL_X)) 
-        //chassis.pid_tuner_toggle();
+      if (master.get_digital_new_press(DIGITAL_X)) 
+        chassis.pid_tuner_toggle();
         
       // Trigger the selected autonomous routine
-      //if (master.get_digital_new_press(DIGITAL_B)) 
-        //autonomous();
+      if (master.get_digital_new_press(DIGITAL_B)) 
+        autonomous();
 
-      //chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
-    //} 
+      chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
+    } 
 
     //chassis.opcontrol_tank(); // Tank control
     chassis.opcontrol_arcade_standard(ez::SPLIT); // Standard split arcade
@@ -208,11 +216,11 @@ void opcontrol() {
     }
 
     //I think this should be a single button an just be a toggle on/off
-    if(master.get_digital_new_press(DIGITAL_X)) {
+    if(master.get_digital_new_press(DIGITAL_Y)) {
       Flaps.set_value(!Flaps.get_value());
     }
 
-    if(master.get_digital(DIGITAL_UP)) {
+    if(master.get_digital(DIGITAL_RIGHT)) {
       Deploy.set_value(true);
     } else {
       Deploy.set_value(false);

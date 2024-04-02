@@ -16,7 +16,7 @@ const int SWING_SPEED = 90;
 void default_constants() {
   chassis.pid_heading_constants_set(3, 0, 20);
   chassis.pid_drive_constants_set(10, 0, 100);
-  chassis.pid_turn_constants_set(3, 0, 20);
+  chassis.pid_turn_constants_set(6, 0, 30);
   chassis.pid_swing_constants_set(5, 0, 30);
 
   chassis.pid_turn_exit_condition_set(300_ms, 3_deg, 500_ms, 7_deg, 750_ms, 750_ms);
@@ -194,3 +194,12 @@ void interfered_example() {
 // . . .
 // Make your own autonomous functions here!
 // . . .
+
+void turn_test() {
+  chassis.pid_turn_set(90_deg, TURN_SPEED);
+  chassis.pid_wait();
+  
+  // chassis.pid_turn_set(0_deg, TURN_SPEED);
+  // chassis.pid_wait();
+
+}

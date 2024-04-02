@@ -13,3 +13,6 @@ void combining_movements();
 void interfered_example();
 
 void default_constants();
+
+//Custom Auton routines
+void turn_test();
