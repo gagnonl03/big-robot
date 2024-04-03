@@ -66,7 +66,9 @@ void initialize() {
     Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
     Auton("Combine all 3 movements", combining_movements),
     Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),*/
-    Auton("Turn Test", turn_test),
+    Auton("Forward drive test", forward_test),
+    Auton("45deg Turn Test", turn_test45),
+    Auton("90deg Turn Test", turn_test90),
   });
 
   // Initialize chassis and auton selector

@@ -15,4 +15,6 @@ void interfered_example();
 void default_constants();
 
 //Custom Auton routines
-void turn_test();
+void turn_test90();
+void turn_test45();
+void forward_test();
