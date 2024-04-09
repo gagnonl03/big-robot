@@ -79,6 +79,7 @@ void opcontrol(void);
 #endif
 
 #ifdef __cplusplus
+#include "globals.hpp"
 /**
  * You can add C++-only headers here
  */

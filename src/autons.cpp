@@ -15,7 +15,7 @@ const int SWING_SPEED = 90;
 ///
 void default_constants() {
   chassis.pid_heading_constants_set(3, 0, 20);
-  chassis.pid_drive_constants_set(10, 0, 100);
+  chassis.pid_drive_constants_set(14.3, 0, 0);
   chassis.pid_turn_constants_set(2.3, 0, 8.25);
   chassis.pid_swing_constants_set(5, 0, 30);
 
@@ -23,7 +23,7 @@ void default_constants() {
   chassis.pid_swing_exit_condition_set(300_ms, 3_deg, 500_ms, 7_deg, 750_ms, 750_ms);
   chassis.pid_drive_exit_condition_set(300_ms, 1_in, 500_ms, 3_in, 750_ms, 750_ms);
 
-  chassis.slew_drive_constants_set(7_in, 80);
+  chassis.slew_drive_constants_set(7_in, 50);
 }
 
 
@@ -214,9 +214,175 @@ void turn_test45() {
 }
 
 void forward_test() {
-  chassis.pid_drive_set(24_in, DRIVE_SPEED);
+  //pros::Task driveSensor(getLdriveSensor);
+  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  /*while(true) {
+    if(master.get_digital_new_press(DIGITAL_L1)){
+      break;
+    }
+  }*/
   chassis.pid_wait();
-
-  
+  master.print(0,10, "uh:%.2f",chassis.drive_sensor_left());
+  pros::delay(1000);
+   
 }
 
+void drive_square() {
+    chassis.pid_drive_set(12_in, DRIVE_SPEED, true);
+    chassis.pid_wait();
+
+    chassis.pid_turn_set(90_deg, TURN_SPEED);
+    chassis.pid_wait();
+
+    chassis.pid_drive_set(12_in, DRIVE_SPEED, true);
+    chassis.pid_wait();
+
+    chassis.pid_turn_set(180_deg, TURN_SPEED);
+    chassis.pid_wait();
+
+    chassis.pid_drive_set(12_in, DRIVE_SPEED, true);
+    chassis.pid_wait();
+
+    chassis.pid_turn_set(270_deg, TURN_SPEED);
+    chassis.pid_wait();
+
+    chassis.pid_drive_set(12_in, DRIVE_SPEED, true);
+    chassis.pid_wait();
+
+    chassis.pid_turn_set(360_deg, TURN_SPEED);
+    chassis.pid_wait();
+
+}
+
+void competition_auton() {
+
+  //Start Shooter Motors
+  TopShoot.move(30);
+  MiddleShoot.move(-30);
+  BotShoot.move(30);
+
+  //Rush Middle
+  chassis.pid_drive_set(-38_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-45_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  //Deploy Intake
+  Deploy.set_value(true);
+  pros::delay(250);
+
+  //Start Intake
+  Suck.move(-127); 
+  pros::delay(1000); 
+
+  chassis.pid_turn_set(-135_deg, TURN_SPEED);
+  chassis.pid_wait();  
+
+  SuckClose.move(-127);
+  pros::delay(1000);
+  SuckClose.brake();
+
+  chassis.pid_turn_set(-45_deg, TURN_SPEED);
+  chassis.pid_wait();   
+  
+  chassis.pid_drive_set(-12_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-135_deg, TURN_SPEED);
+  chassis.pid_wait(); 
+
+  SuckClose.move(-127);
+  pros::delay(1000);
+  SuckClose.brake();
+
+  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+
+  chassis.pid_drive_set(-12_in, DRIVE_SPEED, true);
+  chassis.pid_wait(); 
+
+  chassis.pid_turn_set(-225_deg, TURN_SPEED);
+  chassis.pid_wait();   
+
+  chassis.pid_drive_set(-15_in, DRIVE_SPEED, true);
+  chassis.pid_wait(); 
+
+  chassis.pid_turn_set(-180_deg, TURN_SPEED);
+  chassis.pid_wait(); 
+
+  chassis.pid_drive_set(-46_in, DRIVE_SPEED, true);
+  chassis.pid_wait(); 
+
+  //Start Matchload shooting
+
+  //Quicken Shooter Motors
+  TopShoot.move(90);
+  MiddleShoot.move(-90);
+  BotShoot.move(90);
+
+  int i = 0;
+  while (i <= 10) {
+    Suck.move(-127);
+
+    chassis.pid_drive_set(6_in, DRIVE_SPEED, false);
+    chassis.pid_wait();  
+
+    SuckClose.move(-127);
+
+    chassis.pid_turn_set(30_deg, TURN_SPEED);
+    chassis.pid_wait();
+
+    SuckClose.brake();
+
+    chassis.pid_turn_set(0_deg, TURN_SPEED);
+    chassis.pid_wait();     
+
+    chassis.pid_drive_set(-6_in, DRIVE_SPEED, false);
+    chassis.pid_wait(); 
+
+    i = i + 1;
+  }
+
+
+
+
+
+  
+  /*
+  //Deploy Intake
+  Deploy.set_value(true);
+
+  //Start Shooter Motors
+  TopShoot.move(90);
+  MiddleShoot.move(-90);
+  BotShoot.move(90);  
+
+  //Matchload Shooting
+  Suck.move(-127);
+  pros::delay(500);
+  Deploy.set_value(false);  
+
+  int i = 0;
+  while (i <= 10) {
+    Suck.move(-127);
+
+    chassis.pid_drive_set(6_in, DRIVE_SPEED, false);
+    chassis.pid_wait();  
+
+    SuckClose.move(-127);
+
+    chassis.pid_turn_set(30_deg, TURN_SPEED);
+    chassis.pid_wait();
+
+    SuckClose.brake();
+
+    chassis.pid_turn_set(0_deg, TURN_SPEED);
+    chassis.pid_wait();     
+
+    chassis.pid_drive_set(-6_in, DRIVE_SPEED, false);
+    chassis.pid_wait(); 
+
+    i = i + 1;
+  }*/
+}

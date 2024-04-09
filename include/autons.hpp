@@ -18,3 +18,5 @@ void default_constants();
 void turn_test90();
 void turn_test45();
 void forward_test();
+void drive_square();
+void competition_auton();

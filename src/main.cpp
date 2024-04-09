@@ -5,17 +5,15 @@
 // https://ez-robotics.github.io/EZ-Template/
 /////
 
-/////bruh
-
 // Chassis constructor
 ez::Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
   //   the first port is used as the sensor
-  {-3, -4, -18, -7}
+  {-7, -4, -18, -3}
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is used as the sensor
-  ,{8, 9, 10, 11}
+  ,{11, 9, 10, 8}
 
   // IMU Port
   ,1
@@ -33,8 +31,6 @@ ez::Drive chassis (
   ,1
 );
 
-
-
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -50,7 +46,7 @@ void initialize() {
   // Configure your chassis controls
   chassis.opcontrol_curve_buttons_toggle(true); // Enables modifying the controller curve with buttons on the joysticks
   chassis.opcontrol_drive_activebrake_set(0); // Sets the active brake kP. We recommend 0.1.
-  chassis.opcontrol_curve_default_set(0, 0); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
+  chassis.opcontrol_curve_default_set(8, 10); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
   default_constants(); // Set the drive to your own constants from autons.cpp!
 
   // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
@@ -66,6 +62,8 @@ void initialize() {
     Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
     Auton("Combine all 3 movements", combining_movements),
     Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),*/
+    Auton("Competition Auton", competition_auton),
+    Auton("drive square", drive_square),
     Auton("Forward drive test", forward_test),
     Auton("45deg Turn Test", turn_test45),
     Auton("90deg Turn Test", turn_test90),
@@ -75,6 +73,9 @@ void initialize() {
   chassis.initialize();
   ez::as::initialize();
   master.rumble(".");
+
+  // pros::delay(50);
+  // pros::Task imuValues(getIMU);
 
 }
 
@@ -124,6 +125,7 @@ void autonomous() {
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold.  This helps autonomous consistency
 
   ez::as::auton_selector.selected_auton_call(); // Calls selected auton from autonomous selector
+  
 }
 
 
@@ -141,29 +143,21 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+void getIMU() {
+  while (true) {
+    master.print(0,0, "imu:%.2f",chassis.drive_imu_get());
+  }
+}
+
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
 
-  //init ports
-  //really should be done elsewhere, but its going here for now
-  pros::Motor Suck(14);
-  pros::Motor SuckClose(17);
-  pros::Motor MiddleShoot(15);
-  pros::Motor TopShoot(16);
-  pros::Motor BotShoot(12);
-  //doing this instead of using ADIDigitalOut gives access to
-  //get_value(), making turning this into a 1 button toggle a lot easier
-  pros::ADIPort Flaps('a', pros::E_ADI_DIGITAL_OUT);
-  
-  pros::ADIDigitalOut Deploy('b');
-
   master.clear_line(0);
 
   while (true) {
-
-    master.print(0,0, "imu:%.2f",chassis.drive_imu_get());
-    pros::lcd::print(7, "imu:%.2f",chassis.drive_imu_get());
+    // master.print(0,0, "imu:%.2f",chassis.drive_imu_get());
     
     // PID Tuner
     // After you find values that you're happy with, you'll have to set them in auton.cpp
