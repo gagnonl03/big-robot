@@ -255,14 +255,18 @@ void drive_square() {
 }
 
 void competition_auton() {
-
+  
   //Start Shooter Motors
-  TopShoot.move(50);
-  MiddleShoot.move(-50);
-  BotShoot.move(50);
+  TopShoot.move(40);
+  MiddleShoot.move(-40);
+  BotShoot.move(40);
 
   //Drive towards first triball
-  chassis.pid_drive_set(-37_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-6_in, DRIVE_SPEED);
+  chassis.pid_wait();  
+  chassis.pid_turn_set(15_deg, TURN_SPEED);
+  chassis.pid_wait();  
+  chassis.pid_drive_set(-28_in, DRIVE_SPEED, true);
   chassis.pid_wait();
 
   //turn towards first triball
@@ -271,17 +275,13 @@ void competition_auton() {
 
   //Deploy Intake onto first triball
   Deploy.set_value(true);
-  pros::delay(100);
+  pros::delay(500);
 
   //Suck in first triball
   Suck.move(-127); 
-  pros::delay(1000); 
-
-  //drive forward and back slighty to get better grip on triball
-  chassis.pid_drive_set(-4_in, DRIVE_SPEED);
-  chassis.pid_wait(); 
-  chassis.pid_drive_set(4_in, DRIVE_SPEED);
+  chassis.pid_drive_set(-8_in, DRIVE_SPEED, true);
   chassis.pid_wait();  
+ 
 
   //turn towards middle with first triball
   chassis.pid_turn_set(-135_deg, TURN_SPEED);
@@ -297,7 +297,7 @@ void competition_auton() {
   chassis.pid_wait(); 
 
   //Drive towards 2nd triball with primary intake motor still spinning, picking up the 2nd triball.
-  chassis.pid_drive_set(-12_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-10_in, DRIVE_SPEED, true);
   chassis.pid_wait();
 
   //back up a bit
@@ -314,7 +314,7 @@ void competition_auton() {
   SuckClose.brake();
 
   //Push triball across middle using ramp
-  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(20_in, DRIVE_SPEED);
   chassis.pid_wait();
 
   //drive backwards, starts route back to corner.
@@ -326,7 +326,7 @@ void competition_auton() {
   chassis.pid_wait();   
 
   //drive towards corner 1
-  chassis.pid_drive_set(-12_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-10_in, DRIVE_SPEED, true);
   chassis.pid_wait(); 
 
   //turn towards corner 2
@@ -340,29 +340,29 @@ void competition_auton() {
   //Start Matchload shooting
 
   //Quicken Shooter Motors
-  TopShoot.move(90);
-  MiddleShoot.move(-90);
-  BotShoot.move(90);
+  TopShoot.move(70);
+  MiddleShoot.move(-70);
+  BotShoot.move(70);
 
   //Matchload shooting loop: shoots 11 triballs.
   int i = 0;
   while (i <= 10) {
     Suck.move(-127);
 
-    chassis.pid_drive_set(6_in, DRIVE_SPEED, false);
+    chassis.pid_drive_set(8_in, DRIVE_SPEED);
     chassis.pid_wait();  
-
-    SuckClose.move(-127);
 
     chassis.pid_turn_set(-150_deg, TURN_SPEED);
     chassis.pid_wait();
-
+    
+    SuckClose.move(-127);    
+    pros::delay(1000);
     SuckClose.brake();
 
     chassis.pid_turn_set(-180_deg, TURN_SPEED);
     chassis.pid_wait();     
 
-    chassis.pid_drive_set(-6_in, DRIVE_SPEED, false);
+    chassis.pid_drive_set(-8_in, DRIVE_SPEED);
     chassis.pid_wait(); 
 
     i = i + 1;
