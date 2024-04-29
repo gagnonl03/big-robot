@@ -257,9 +257,9 @@ void drive_square() {
 void competition_auton() {
   
   //Start Shooter Motors
-  TopShoot.move(40);
-  MiddleShoot.move(-40);
-  BotShoot.move(40);
+  TopShoot.move(45);
+  MiddleShoot.move(-45);
+  BotShoot.move(45);
 
   //Drive towards first triball
   chassis.pid_drive_set(-6_in, DRIVE_SPEED);
@@ -284,7 +284,7 @@ void competition_auton() {
  
 
   //turn towards middle with first triball
-  chassis.pid_turn_set(-135_deg, TURN_SPEED);
+  chassis.pid_turn_set(-145_deg, TURN_SPEED);
   chassis.pid_wait(); 
 
   //activate closer intake motor to shoot first triball across middle then turn 
@@ -350,12 +350,12 @@ void competition_auton() {
     Suck.move(-127);
 
     chassis.pid_drive_set(8_in, DRIVE_SPEED);
-    chassis.pid_wait();  
+    chassis.pid_wait(); 
 
-    chassis.pid_turn_set(-150_deg, TURN_SPEED);
+    chassis.pid_turn_set(-158_deg, TURN_SPEED);
     chassis.pid_wait();
     
-    SuckClose.move(-127);    
+    SuckClose.move(-127);
     pros::delay(1000);
     SuckClose.brake();
 

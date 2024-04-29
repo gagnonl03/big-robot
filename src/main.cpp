@@ -202,9 +202,9 @@ void opcontrol() {
       MiddleShoot.move(-100);
       BotShoot.move(100);
     } else if(master.get_digital(DIGITAL_R2)) {
-      TopShoot.move(50);
-      MiddleShoot.move(-50);
-      BotShoot.move(50);
+      TopShoot.move(70);
+      MiddleShoot.move(-70);
+      BotShoot.move(70);
     } else {
       TopShoot.brake();
       MiddleShoot.brake();
