@@ -257,9 +257,9 @@ void drive_square() {
 void competition_auton() {
   
   //Start Shooter Motors
-  TopShoot.move(45);
-  MiddleShoot.move(-45);
-  BotShoot.move(45);
+  TopShoot.move(50);
+  MiddleShoot.move(-50);
+  BotShoot.move(50);
 
   //Drive towards first triball
   chassis.pid_drive_set(-6_in, DRIVE_SPEED);
@@ -340,9 +340,9 @@ void competition_auton() {
   //Start Matchload shooting
 
   //Quicken Shooter Motors
-  TopShoot.move(70);
-  MiddleShoot.move(-70);
-  BotShoot.move(70);
+  TopShoot.move(75);
+  MiddleShoot.move(-75);
+  BotShoot.move(75);
 
   //Matchload shooting loop: shoots 11 triballs.
   int i = 0;
@@ -352,7 +352,7 @@ void competition_auton() {
     chassis.pid_drive_set(8_in, DRIVE_SPEED);
     chassis.pid_wait(); 
 
-    chassis.pid_turn_set(-158_deg, TURN_SPEED);
+    chassis.pid_turn_set(-157_deg, TURN_SPEED);
     chassis.pid_wait();
     
     SuckClose.move(-127);
