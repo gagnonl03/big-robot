@@ -345,8 +345,7 @@ void competition_auton() {
   BotShoot.move(75);
 
   //Matchload shooting loop: shoots 11 triballs.
-  int i = 0;
-  while (i <= 10) {
+  for(int i = 0; i <= 10; i++) {
     Suck.move(-127);
 
     chassis.pid_drive_set(8_in, DRIVE_SPEED);
@@ -364,15 +363,8 @@ void competition_auton() {
 
     chassis.pid_drive_set(-8_in, DRIVE_SPEED);
     chassis.pid_wait(); 
-
-    i = i + 1;
   }
 
-
-
-
-
-  
   /*
   //Deploy Intake
   Deploy.set_value(true);
